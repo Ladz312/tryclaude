@@ -408,6 +408,11 @@
                 this.setGenerating(true);
 
                 try {
+                    // Check if Puter SDK is loaded
+                    if (typeof puter === 'undefined' || !puter.ai || !puter.ai.chat) {
+                        throw new Error('Puter AI SDK is not loaded. Please check your internet connection or try again later.');
+                    }
+
                     // Get selected model
                     const selectedModel = this.modelSelect.value;
                     
@@ -455,7 +460,7 @@
                     
                 } catch (error) {
                     console.error('Error calling AI:', error);
-                    this.addMessage('Sorry, I encountered an error while processing your request. Please try again.', 'ai');
+                    this.addMessage(error.message || 'Sorry, I encountered an error while processing your request. Please try again.', 'ai');
                 } finally {
                     this.hideTypingIndicator();
                     this.setGenerating(false);
